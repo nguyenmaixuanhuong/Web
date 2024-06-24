@@ -26,4 +26,18 @@ public class LoginControllerTest {
                 .andExpect(jsonPath("$.errorCode").value(404))
                 .andExpect(jsonPath("$.errorMessage").value("User not found"));
     }
+
+     @Test
+    public void testLoginWithGetMethod() throws Exception {
+        // Arrange
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsername("testuser");
+        loginRequest.setPassword("testpassword");
+
+        // Act & Assert
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(loginRequest)))
+                .andExpect(status().isMethodNotAllowed());
+    }
 }
